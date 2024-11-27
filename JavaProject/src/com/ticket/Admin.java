@@ -110,13 +110,14 @@ public class Admin extends User implements EventManager{
 	        System.out.println("Event not found.");
 	    }
 	}
+	// This method has an example of LVTI for user and attendee.
 	   private void viewAllBookings() {
 	        System.out.println("\nAll Bookings:");
 	        boolean bookingsFound = false;
 
-	        for (User user : TicketQueen.getAllUsers()) {
+	        for (var user : TicketQueen.getAllUsers()) {
 	            if (user instanceof Attendee) {
-	                Attendee attendee = (Attendee) user;
+	                var attendee = (Attendee) user;
 	                if (!attendee.getAttendeeTickets().isEmpty()) {
 	                    System.out.println("\nUser ID: " + attendee.getUserId() + " - " + attendee.getUserName());
 	                    for (String ticket : attendee.getAttendeeTickets()) {
