@@ -94,7 +94,15 @@ public final class Organiser extends User implements EventManager {
 	    }
 	 private void editEvent() {
 		 System.out.println("Enter the Event ID of the event to edit: ");
-		 String eventID = TicketQueen.getInput();
+		 String eventId = TicketQueen.getInput();
+		 
+		 Event eventToEdit = null;
+		 for(Event event : orgEvents) {
+			 if(event.eventId.equals(eventId)) {
+				 eventToEdit = event;
+				 break;
+			 }
+		 }
 	 }
 
 	 @Override 
