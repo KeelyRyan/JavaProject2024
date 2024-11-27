@@ -14,7 +14,7 @@ public class TicketQueen {
 	public static void main(String[] args) {
 		
 
-		Admin admin = new Admin( "admin@example.com", "admin_user", "ADM001", "adminPass");
+		Admin admin = new Admin( "admin_user", "admin@example.com", "ADM001", "adminPass");
 		allUsers.add(admin);
 		
 		System.out.println("Welcome to TicketQueen.");
@@ -121,7 +121,7 @@ public class TicketQueen {
         System.out.print("Enter password: ");
         String password = getInput();
         
-        Attendee newUser = new Attendee(emailAddress, username, password);
+        Attendee newUser = new Attendee(username, emailAddress, password);
         String userID = newUser.getUserId();
         System.out.println("Your account has been created.");
         System.out.println("Your userId is " + userID);

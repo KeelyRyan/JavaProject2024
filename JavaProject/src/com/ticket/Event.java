@@ -4,11 +4,11 @@ import java.util.EnumMap;
 
 public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent {
 	
-    protected String eventId;
-    protected String eventName;
-    protected String venue;
-    protected String date;
-    protected String organiser;
+    private String eventId;
+    private String eventName;
+    private String venue;
+    private String date;
+    private String organiser;
     
     protected EnumMap<TicketType, Integer> ticketAvailability = new EnumMap<>(TicketType.class);
     
@@ -17,7 +17,7 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
         this.eventName = eventName;
         this.venue = venue;
         this.date = date;
-        this.organiser = organiser;
+        this.setOrganiser(organiser);
         
         ticketAvailability.put(TicketType.VIP, 100);
         ticketAvailability.put(TicketType.GENERAL, 700);
@@ -31,6 +31,37 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
             return false;
         }
     }
+    
+    public String getEventId() {
+        return eventId;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+    public String getVenue() {
+        return venue;
+    }
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+	public String getOrganiser() {
+		return organiser;
+	}
+	public void setOrganiser(String organiser) {
+		this.organiser = organiser;
+	}
 
     public int getTicketAvailability(TicketType ticketType) {
         return ticketAvailability.get(ticketType);
@@ -40,4 +71,5 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
     }
     
     public abstract String getEventType();
+
 }

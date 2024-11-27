@@ -2,24 +2,16 @@ package com.ticket;
 
 public abstract class User {
 
-	protected String username;
 	protected String emailAddress;
 	protected String password;
+	protected String username;
 	
-public User(String emailAddress, String username, String password) {
+public User(String username, String emailAddress, String password) {
+	this.username = username;
 	this.emailAddress=emailAddress;
-	this.username=username;
 	this.password=password;
 	}
 	
-
-public void setUserName(String username) {
-	this.username= username;
-}
-
-public String getUserName() {
-	return username;
-}
 
 public void setEmailAddress(String emailAddress) {
 	this.emailAddress= emailAddress;
@@ -27,6 +19,13 @@ public void setEmailAddress(String emailAddress) {
 
 public String getEmailAddress() {
 	return emailAddress;
+}
+public void setUserName(String username) {
+	this.username= username;
+}
+
+public String getUserName() {
+	return username;
 }
 public void setPassword(String password) {
 	this.password= password;

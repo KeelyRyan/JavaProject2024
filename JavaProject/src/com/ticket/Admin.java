@@ -5,22 +5,16 @@ public class Admin extends User implements EventManager{
 	private String userId;
 	private static int count;
 		
-	public Admin(String emailAddress, String username, String password) {
-		super(emailAddress, username, password);
+	public Admin(String username,String emailAddress, String password) {
+		this(username, emailAddress, "ADM" + String.format("%03d", count), password);
 		count++;
-		this.emailAddress = emailAddress;
-		this.username =username;
-		this.password = password;
-		this.userId = "ADM" + String.format("%03d", count);
 	}
 	
-	public Admin(String emailAddress, String username, String userID, String password) {
-		super(emailAddress, username, password);
+	public Admin(String username, String emailAddress, String userId, String password) {
+		super(username, emailAddress, password);
+		this.userId = userId;
 		count++;
-		this.emailAddress = emailAddress;
-		this.username =username;
-		this.password = password;
-		this.userId = userID;
+
 	}
 	
 	public String getUserId() {
@@ -72,22 +66,24 @@ public class Admin extends User implements EventManager{
     }
 
 	private void addNewAdmin() {
+	    System.out.print("Enter username for the new Admin account: ");
+	    String username = TicketQueen.getInput();
 
 	    System.out.print("Enter email address for the new Admin account: ");
 	    String emailAddress = TicketQueen.getInput();
 
-	    System.out.print("Enter username for the new Admin account: ");
-	    String username = TicketQueen.getInput();
 
 	    System.out.print("Enter password for the new Admin account: ");
 	    String password = TicketQueen.getInput();
 
-	    Admin newAdmin = new Admin(emailAddress, username, password);
+	    Admin newAdmin = new Admin(username, emailAddress, password);
 	    TicketQueen.addUser(newAdmin); 
 
 	    System.out.println("Admin account successfully created with User ID: " + newAdmin.getUserId());
 	}
 	private void addNewOrganiser() {
+	    System.out.print("Enter username for the new Organiser account: ");
+	    String username = TicketQueen.getInput();
 
 	    System.out.print("Enter email address for the new Organiser account: ");
 	    String emailAddress = TicketQueen.getInput();
@@ -95,7 +91,7 @@ public class Admin extends User implements EventManager{
 	    System.out.print("Enter password for the new Organiser account: ");
 	    String password = TicketQueen.getInput();
 
-	    Organiser newOrganiser = new Organiser(emailAddress, username, password);
+	    Organiser newOrganiser = new Organiser(username, emailAddress, password);
 	    TicketQueen.addUser(newOrganiser); 
 	    
 	    
@@ -108,7 +104,7 @@ public class Admin extends User implements EventManager{
 
 	    Event eventToDelete = null;
 	    for (Event event : TicketQueen.getAllEvents()) {
-	        if (event.eventId.equals(eventId)) {
+	        if (event.getEventId().equals(eventId)) {
 	            eventToDelete = event;
 	            break;
 	        }

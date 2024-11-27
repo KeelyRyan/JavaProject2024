@@ -16,7 +16,7 @@ public final class ComedyEvent extends Event {
 	}
 	
     public String getShowDetails() {
-        return "Comedy by: " + performer + " in " + venue;
+        return "Comedy by: " + performer + " in " + getVenue();
     }
 
 }

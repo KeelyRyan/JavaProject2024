@@ -16,7 +16,7 @@ public final class MusicEvent extends Event {
 	}
 	
     public String getShowDetails() {
-        return "Live perfomance by: " + act + " in " + venue;
+        return "Live perfomance by: " + act + " in " + getVenue();
     }
 
 }

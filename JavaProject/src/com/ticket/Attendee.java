@@ -9,8 +9,8 @@ public class Attendee extends User{
 
 	private static int count = 0;
 		
-	public Attendee(String emailAddress, String username, String password) {
-		super(emailAddress, username, password);
+	public Attendee(String username, String emailAddress, String password) {
+		super(username, emailAddress, password);
 		count++;
 		this.userId = "ATT" + String.format("%03d", count);
 	}
@@ -65,7 +65,7 @@ public class Attendee extends User{
 
 	        Event selectedEvent = null;
 	        for (Event event : TicketQueen.getAllEvents()) {
-	            if (event.eventId.equals(eventId)) {
+	            if (event.getEventId().equals(eventId)) {
 	                selectedEvent = event;
 	                break;
 	            }

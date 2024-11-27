@@ -9,8 +9,8 @@ public final class Organiser extends User implements EventManager {
 	private ArrayList <Event> orgEvents = new ArrayList <>();
 	
 		
-	public Organiser(String emailAddress, String username, String password) {
-		super(emailAddress, username, password);
+	public Organiser(String username, String emailAddress, String password) {
+		super(username, emailAddress, password);
 		count++;
 		this.userId = "ORG" + String.format("%03d", count);
 	}
@@ -98,13 +98,38 @@ public final class Organiser extends User implements EventManager {
 		 
 		 Event eventToEdit = null;
 		 for(Event event : orgEvents) {
-			 if(event.eventId.equals(eventId)) {
+			 if(event.getEventId().equals(eventId)) {
 				 eventToEdit = event;
 				 break;
 			 }
 		 }
+		
+		 if (eventToEdit != null) {
+			 System.out.println("Editing Event: " + eventToEdit.getEventDetails());
+		 
+	         System.out.print("Update Event name: (hit enter to skip)");
+	         String newName = TicketQueen.getInput();
+	         if (!newName.isEmpty()) {
+	             eventToEdit.setEventName(newName);
+	         }
+	         System.out.print("Update Event venue: (hit enter to skip)");
+	         String newVenue = TicketQueen.getInput();
+	         if (!newVenue.isEmpty()) {
+	             eventToEdit.setVenue(newVenue);
+	         }
+	         System.out.print("Update Event Date: (hit enter to skip)");
+	         String newDate = TicketQueen.getInput();
+	         if (!newDate.isEmpty()) {
+	             eventToEdit.setDate(newDate);
+	         }
+	         
+	         System.out.println("Event update successfully: " + eventToEdit.getEventDetails());
+	 } else {
+		 System.out.println("Event not found in your event list.");
+         
+         
 	 }
-
+}
 	 @Override 
 	    public void cancelEvent() {
 	        System.out.print("Enter Event ID to delete: ");
@@ -112,7 +137,7 @@ public final class Organiser extends User implements EventManager {
 
 	        Event eventToDelete = null;
 	        for (Event event : orgEvents) {
-	            if (event.eventId.equals(eventId)) {
+	            if (event.getEventId().equals(eventId)) {
 	                eventToDelete = event;
 	                break;
 	            }
@@ -123,7 +148,7 @@ public final class Organiser extends User implements EventManager {
 	            TicketQueen.removeEvent(eventToDelete);
 	            System.out.println("Event deleted successfully.");
 	        } else {
-	            System.out.println("Event not found or not owned by you.");
+	            System.out.println("Event not found in your event list.");
 	        }
 	    }
 	}
