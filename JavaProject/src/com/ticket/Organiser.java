@@ -35,16 +35,16 @@ public final class Organiser extends User implements EventManager {
 	            System.out.println("Enter '4' to cancel event,");
 	            System.out.println("Enter '5' to logout");
 
-	            int choice = TicketMistress.getUserChoice();
+	            int choice = TicketQueen.getUserChoice();
 	            switch (choice) {
 	                case 1:
 	                    addEvent();
 	                    break;
 	                case 2:
-	                	TicketMistress.displayEvents();
+	                	TicketQueen.displayEvents();
 	                    break;
 	                case 3:
-	                    System.out.println("Edit event (to be implemented)");
+	                    editEvent();
 	                    break;
 	                case 4:
 	                    cancelEvent();
@@ -61,22 +61,22 @@ public final class Organiser extends User implements EventManager {
 	 @Override
 	public void addEvent() {
 	        System.out.print("Enter Event ID: ");
-	        String eventId = TicketMistress.getInput();
+	        String eventId = TicketQueen.getInput();
 	        
 	        System.out.print("Enter category (Music/Comedy/Theatre: ");
-	        String eventType = TicketMistress.getInput().toLowerCase();
+	        String eventType = TicketQueen.getInput().toLowerCase();
 	        
 	        System.out.print("Enter Director/act/comedian: ");
-	        String eventPerformers = TicketMistress.getInput();
+	        String eventPerformers = TicketQueen.getInput();
 
 	        System.out.print("Enter Event Name: ");
-	        String eventName = TicketMistress.getInput();
+	        String eventName = TicketQueen.getInput();
 
 	        System.out.print("Enter Venue: ");
-	        String venue = TicketMistress.getInput();
+	        String venue = TicketQueen.getInput();
 
 	        System.out.print("Enter Date (YYYY-MM-DD): ");
-	        String date = TicketMistress.getInput();
+	        String date = TicketQueen.getInput();
 
 	        Event newEvent = null;
 	     
@@ -88,15 +88,19 @@ public final class Organiser extends User implements EventManager {
 		        newEvent = new TheatreEvent(eventId, eventName, venue, date, eventPerformers, userId);
 	        }
 	        orgEvents.add(newEvent);
-	        TicketMistress.addEvent(newEvent);
+	        TicketQueen.addEvent(newEvent);
 	
 	        System.out.println("Event added successfully: " + newEvent.getEventDetails());
 	    }
+	 private void editEvent() {
+		 System.out.println("Enter the Event ID of the event to edit: ");
+		 String eventID = TicketQueen.getInput();
+	 }
 
 	 @Override 
 	    public void cancelEvent() {
 	        System.out.print("Enter Event ID to delete: ");
-	        String eventId = TicketMistress.getInput();
+	        String eventId = TicketQueen.getInput();
 
 	        Event eventToDelete = null;
 	        for (Event event : orgEvents) {
@@ -108,7 +112,7 @@ public final class Organiser extends User implements EventManager {
 
 	        if (eventToDelete != null) {
 	            orgEvents.remove(eventToDelete);
-	            TicketMistress.removeEvent(eventToDelete);
+	            TicketQueen.removeEvent(eventToDelete);
 	            System.out.println("Event deleted successfully.");
 	        } else {
 	            System.out.println("Event not found or not owned by you.");

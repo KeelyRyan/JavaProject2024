@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class TicketMistress {
+public class TicketQueen {
 	
 
 	private static ArrayList<User> allUsers = new ArrayList<>();
@@ -13,12 +13,11 @@ public class TicketMistress {
 	
 	public static void main(String[] args) {
 		
-		// Create initial admin user and add to Admin list
+
 		Admin admin = new Admin( "admin@example.com", "admin_user", "ADM001", "adminPass");
 		allUsers.add(admin);
 		
-		// Welcome message to user
-		System.out.println("Welcome to TicketMistress.");
+		System.out.println("Welcome to TicketQueen.");
 		
         boolean appOpen = true;
         while (appOpen) {
@@ -36,7 +35,7 @@ public class TicketMistress {
 	                    displayEvents();
 	                    break;
 	            case 4:
-	            	System.out.println("Thank you for visiting TicketMistress, see you again.");
+	            	System.out.println("Thank you for visiting TicketQueen, see you again.");
 	            	appOpen = false;
 	                System.exit(0);
 	                break;
@@ -63,7 +62,6 @@ public class TicketMistress {
         try {
             Scanner scanner = new Scanner(System.in);
             int choice = scanner.nextInt();
-            scanner.close();
             return choice;
         } catch (Exception e) {
             return -1; // Invalid input
@@ -132,21 +130,7 @@ public class TicketMistress {
         userLogin();   
         
     }
-    public static void addUser(User user) {
-        allUsers.add(user);
-    }
-    
-    public static void addEvent(Event event) {
-        allEvents.add(event);
-    }
 
-	public static void removeEvent(Event eventToDelete) {
-		allEvents.remove(eventToDelete);
-		
-	}
-    public static ArrayList<Event> getAllEvents() {
-        return allEvents;
-    }
     
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
         List<Event> availableEvents = allEvents.stream()
@@ -174,7 +158,24 @@ public class TicketMistress {
         }
     }
 
+    public static void addUser(User user) {
+        allUsers.add(user);
+    }
+    
+    public static void addEvent(Event event) {
+        allEvents.add(event);
+    }
 
+	public static void removeEvent(Event eventToDelete) {
+		allEvents.remove(eventToDelete);
+		
+	}
+    public static ArrayList<Event> getAllEvents() {
+        return allEvents;
+    }
+    public static ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
 
 
 

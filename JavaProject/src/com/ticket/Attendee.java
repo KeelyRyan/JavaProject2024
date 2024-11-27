@@ -6,6 +6,7 @@ public class Attendee extends User{
 
 	private String userId;
 	private ArrayList <String> attendeeTickets = new ArrayList <>();
+
 	private static int count = 0;
 		
 	public Attendee(String emailAddress, String username, String password) {
@@ -23,20 +24,24 @@ public class Attendee extends User{
 		return "Member";
 
 	}
+	public ArrayList<String> getAttendeeTickets() {
+	    return attendeeTickets;
+	}
+
 	   @Override
 	    public void postLoginMenu() {
 	        boolean attendeeActive = true;
 	        while (attendeeActive) {
-	            System.out.println("Attendee Menu:");
+	            System.out.println("\nAttendee Menu:");
 	            System.out.println("Enter '1' to browse events,");
 	            System.out.println("Enter '2' to book tickets,");
 	            System.out.println("Enter '3' to view your tickets,");
 	            System.out.println("Enter '4' to logout");
 
-	            int choice = TicketMistress.getUserChoice();
+	            int choice = TicketQueen.getUserChoice();
 	            switch (choice) {
 	                case 1:
-	                	TicketMistress.displayEvents();
+	                	TicketQueen.displayEvents();
 	                    break;
 	                case 2:
 	                	bookTicket();
@@ -56,10 +61,10 @@ public class Attendee extends User{
 	   
 	   private void bookTicket() {
 	        System.out.print("Enter Event ID to book a ticket: ");
-	        String eventId = TicketMistress.getInput();
+	        String eventId = TicketQueen.getInput();
 
 	        Event selectedEvent = null;
-	        for (Event event : TicketMistress.getAllEvents()) {
+	        for (Event event : TicketQueen.getAllEvents()) {
 	            if (event.eventId.equals(eventId)) {
 	                selectedEvent = event;
 	                break;
@@ -69,7 +74,7 @@ public class Attendee extends User{
 	        if (selectedEvent != null) {
 	            System.out.println("Available Ticket Types: VIP, GENERAL, BALCONY");
 	            System.out.print("Enter ticket type: ");
-	            String ticketTypeStr = TicketMistress.getInput().toUpperCase();
+	            String ticketTypeStr = TicketQueen.getInput().toUpperCase();
 	            TicketType ticketType;
 
 	            try {
