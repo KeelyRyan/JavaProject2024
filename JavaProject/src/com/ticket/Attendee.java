@@ -1,6 +1,7 @@
 package com.ticket;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Attendee extends User{
 
@@ -44,7 +45,7 @@ public class Attendee extends User{
 	                	TicketQueen.displayEvents();
 	                    break;
 	                case 2:
-	                	bookTicket();
+	                	numberOfTickets();
 	                    break;
 	                case 3:
 	                	viewTickets();
@@ -59,7 +60,22 @@ public class Attendee extends User{
 	        }
 	    }
 	   
-	   private void bookTicket() {
+	   private void numberOfTickets() {
+	        System.out.print("Are you making a group booking: y/n ");
+	        String groupBook = TicketQueen.getInput().toLowerCase();
+	        if (groupBook.equals("n")){
+	        	singleTicket();
+	        	
+	        } else {
+	            Scanner scanner = new Scanner(System.in);
+	            System.out.print("How many tickets do you want to book: ");
+	            int ticketNumber = scanner.nextInt();
+	            groupTickets(ticketNumber);
+	            
+	        }
+	   }
+	   
+	   private void singleTicket() {
 	        System.out.print("Enter Event ID to book a ticket: ");
 	        String eventId = TicketQueen.getInput();
 
@@ -94,6 +110,49 @@ public class Attendee extends User{
 	            System.out.println("Event not found. Please check the event ID and try again.");
 	        }
 	    }
+	   
+	   private void groupTickets(int ticketNumber) {
+	        System.out.print("Enter Event ID to book a ticket: ");
+	        String eventId = TicketQueen.getInput();
+
+	        Event selectedEvent = null;
+	        for (Event event : TicketQueen.getAllEvents()) {
+	            if (event.getEventId().equals(eventId)) {
+	                selectedEvent = event;
+	                break;
+	            }
+	        }
+
+	        if (selectedEvent != null) {
+	            System.out.println("Available Ticket Types: VIP, GENERAL, BALCONY");
+	            System.out.print("Enter ticket type: ");
+	            String ticketTypeStr = TicketQueen.getInput().toUpperCase();
+	            TicketType ticketType;
+
+	            try {
+	                ticketType = TicketType.valueOf(ticketTypeStr);
+	            } catch (IllegalArgumentException e) {
+	                System.out.println("Invalid ticket type. Please try again.");
+	                return;
+	            }
+	            
+	            int ticketsBooked =0;
+	            for(int i = 0; i < ticketNumber; i++) { 
+		            if (selectedEvent.bookTicket(ticketType)) {
+		            	ticketsBooked++;
+		            	attendeeTickets.add("Event: " + selectedEvent.getEventDetails() + ", Ticket Type: " + ticketType);
+		                System.out.println("Ticket booked successfully for event: " + selectedEvent.getEventDetails());
+		            } else {
+		            	System.out.println("Only " + ticketsBooked + " tickets were booked. No more tickets available of type " + ticketType);
+	            }
+	        		System.out.println(ticketsBooked + " tickets booked successfully for event: " + selectedEvent.getEventDetails());
+	        } 
+	        }
+	            else {
+	            System.out.println("Event not found. Please check the event ID and try again.");
+	        }
+	   }
+	   
 	    private void viewTickets() {
 	        if (attendeeTickets.isEmpty()) {
 	            System.out.println("You have no booked tickets.");

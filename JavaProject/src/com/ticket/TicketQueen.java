@@ -25,22 +25,13 @@ public class TicketQueen {
 	        int choice = getUserChoice();
 	
 	        switch (choice) {
-	            case 1:
-	                userLogin();
-	                break;
-	            case 2:
-	                registerUser();
-	                break;
-	                case 3:
-	                    displayEvents();
-	                    break;
-	            case 4:
-	            	System.out.println("Thank you for visiting TicketQueen, see you again.");
+	            case 1 -> userLogin();
+	            case 2 -> registerUser();
+	            case 3 -> displayEvents();
+	            case 4 -> {System.out.println("Thank you for visiting TicketQueen, see you again.");
 	            	appOpen = false;
-	                System.exit(0);
-	                break;
-	            default:
-	                System.out.println("Invalid choice. Please try again.");
+	                System.exit(0);}
+	            default -> System.out.println("Invalid choice. Please try again.");
         }
     }
 }
