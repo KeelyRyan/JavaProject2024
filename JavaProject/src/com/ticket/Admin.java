@@ -40,27 +40,20 @@ public class Admin extends User implements EventManager{
 
             int choice = TicketQueen.getUserChoice();
             switch (choice) {
-                case 1:
+                case 1 ->
                 	addNewOrganiser();
-                    break;
-                case 2:
+                case 2 ->
                 	addNewAdmin();
-                    break;
-                case 3:
+                case 3 ->
                     TicketQueen.displayEvents();
-                    break;
-                case 4:
+                case 4 ->
                     cancelEvent();
-                    break;
-                case 5:
+                case 5 ->
                     viewAllBookings();
-                    break;
-                case 6:
+                case 6 -> {
                     adminActive = false;
-                    System.out.println("Logging out...");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Logging out...");}
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }

@@ -41,21 +41,12 @@ public class Attendee extends User{
 
 	            int choice = TicketQueen.getUserChoice();
 	            switch (choice) {
-	                case 1:
-	                	TicketQueen.displayEvents();
-	                    break;
-	                case 2:
-	                	numberOfTickets();
-	                    break;
-	                case 3:
-	                	viewTickets();
-	                    break;
-	                case 4:
-	                    attendeeActive = false;
-	                    System.out.println("Logging out...");
-	                    break;
-	                default:
-	                    System.out.println("Invalid choice. Please try again.");
+	                case 1 -> TicketQueen.displayEvents();
+	                case 2 -> numberOfTickets();
+	                case 3 -> viewTickets();
+	                case 4 -> {attendeeActive = false;
+	                    System.out.println("Logging out...");}
+	                default -> System.out.println("Invalid choice. Please try again.");
 	            }
 	        }
 	    }
