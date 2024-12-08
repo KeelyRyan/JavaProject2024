@@ -6,10 +6,17 @@ public abstract class User {
 	protected String password;
 	protected String username;
 	
-public User(String username, String emailAddress, String password) {
-	this.username = username;
-	this.emailAddress=emailAddress;
-	this.password=password;
+
+	public User(String emailAddress, String password) {
+		this.emailAddress=emailAddress;
+		this.password=password;
+		}
+	
+	
+	public User(String username, String emailAddress, String password) {
+		this.username = username;
+		this.emailAddress=emailAddress;
+		this.password=password;
 	}
 	
 

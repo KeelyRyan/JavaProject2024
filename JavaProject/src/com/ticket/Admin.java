@@ -3,15 +3,16 @@ package com.ticket;
 public class Admin extends User implements EventManager{
 
 	private String userId;
-	private static int count;
-		
-	public Admin(String username,String emailAddress, String password) {
-		this(username, emailAddress, "ADM" + String.format("%03d", count), password);
+	private static int count =1;
+	
+	// Example of this. and this()
+	public Admin(String emailAddress, String password) {
+		this(emailAddress, "ADM" + String.format("%03d", count), password);
 		count++;
 	}
 	
-	public Admin(String username, String emailAddress, String userId, String password) {
-		super(username, emailAddress, password);
+	public Admin(String emailAddress, String userId, String password) {
+		super(emailAddress, password);
 		this.userId = userId;
 		count++;
 
@@ -41,9 +42,9 @@ public class Admin extends User implements EventManager{
             int choice = TicketQueen.getUserChoice();
             switch (choice) {
                 case 1 ->
-                	addNewOrganiser();
+                	addNewUser("Organiser");
                 case 2 ->
-                	addNewAdmin();
+                	addNewUser("Admin");
                 case 3 ->
                     TicketQueen.displayEvents();
                 case 4 ->
@@ -58,38 +59,37 @@ public class Admin extends User implements EventManager{
         }
     }
 
-	private void addNewAdmin() {
-	    System.out.print("Enter username for the new Admin account: ");
+
+	private void addNewUser(String role) {
+	    System.out.print("Enter username for the new " + role + " account: ");
 	    String username = TicketQueen.getInput();
 
-	    System.out.print("Enter email address for the new Admin account: ");
+	    System.out.print("Enter email address for the new " + role + " account: ");
 	    String emailAddress = TicketQueen.getInput();
 
-
-	    System.out.print("Enter password for the new Admin account: ");
+	    System.out.print("Enter password for the new " + role + " account: ");
 	    String password = TicketQueen.getInput();
-
-	    Admin newAdmin = new Admin(username, emailAddress, password);
-	    TicketQueen.addUser(newAdmin); 
-
-	    System.out.println("Admin account successfully created with User ID: " + newAdmin.getUserId());
+	    
+	    if(role.equals("Admin")){
+	    	addNewUser(emailAddress, password);
+	    }else if(role.equals("Organiser")) {
+	    	addNewUser(username, emailAddress, password);
+	    }
 	}
-	private void addNewOrganiser() {
-	    System.out.print("Enter username for the new Organiser account: ");
-	    String username = TicketQueen.getInput();
+	
+	// These two methods are an example of method overloading.
+	private void addNewUser(String emailAddress, String password) {
+	        Admin newAdmin = new Admin(emailAddress, password);
+	        TicketQueen.addUser(newAdmin);
+	        System.out.println("Admin account successfully created with User ID: " + newAdmin.getUserId());
+	}
 
-	    System.out.print("Enter email address for the new Organiser account: ");
-	    String emailAddress = TicketQueen.getInput();
-
-	    System.out.print("Enter password for the new Organiser account: ");
-	    String password = TicketQueen.getInput();
-
+	private void addNewUser(String username, String emailAddress, String password) {
 	    Organiser newOrganiser = new Organiser(username, emailAddress, password);
-	    TicketQueen.addUser(newOrganiser); 
-	    
-	    
+	    TicketQueen.addUser(newOrganiser);
 	    System.out.println("Organiser account successfully created with User ID: " + newOrganiser.getUserId());
 	}
+	//Method overriding/polymorphism example.
 	@Override 
 	public void cancelEvent() {
 	    System.out.print("Enter Event ID to cancel: ");
@@ -110,7 +110,7 @@ public class Admin extends User implements EventManager{
 	        System.out.println("Event not found.");
 	    }
 	}
-	// This method has an example of LVTI for user and attendee.
+	//This method use LVTI 
 	   private void viewAllBookings() {
 	        System.out.println("\nAll Bookings:");
 	        boolean bookingsFound = false;

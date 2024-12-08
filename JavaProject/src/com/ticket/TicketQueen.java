@@ -14,7 +14,7 @@ public class TicketQueen {
 	public static void main(String[] args) {
 		
 
-		Admin admin = new Admin( "admin_user", "admin@example.com", "ADM001", "adminPass");
+		Admin admin = new Admin("admin@example.com", "ADM001", "adminPass");
 		allUsers.add(admin);
 		
 		System.out.println("Welcome to TicketQueen.");
@@ -57,6 +57,7 @@ public class TicketQueen {
         } catch (Exception e) {
             return -1; // Invalid input
         }
+
     }
     
     private static void userLogin() {
