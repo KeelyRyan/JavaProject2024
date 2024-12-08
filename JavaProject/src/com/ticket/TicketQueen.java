@@ -7,18 +7,19 @@ import java.util.stream.Collectors;
 
 public class TicketQueen {
 	
-
+	// Array Lists to store users and events
 	private static ArrayList<User> allUsers = new ArrayList<>();
 	private static ArrayList<Event> allEvents = new ArrayList<>();
 	
 	public static void main(String[] args) {
 		
-
+		// Generate initial Admin user.
 		Admin admin = new Admin("admin@example.com", "ADM001", "adminPass");
 		allUsers.add(admin);
 		
 		System.out.println("Welcome to TicketQueen.");
 		
+		// Show main menu. Shows enhanced Switch in use.
         boolean appOpen = true;
         while (appOpen) {
 	        mainMenu();
@@ -37,7 +38,7 @@ public class TicketQueen {
 }
 	private static Scanner scanner = new Scanner(System.in);
 		
-	// Method to get user input
+	// Method to get user input 
 	static String getInput() {
 	    return scanner.nextLine();
 	}
@@ -66,9 +67,9 @@ public class TicketQueen {
         System.out.print("Enter password: ");
         String password = getInput();
 
-        // Declare a User reference to hold the authenticated user
+ 
         User currentUser = null;
-        // Authentication logic for Admin and Attendee
+   
         if (userId.equals("admin") || userId.startsWith("ADM")) {
             currentUser = authenticateUser(userId, password);
         } else if (userId.startsWith("ATT")) {
@@ -93,7 +94,6 @@ public class TicketQueen {
  // Authenticate user by checking userId and password
     private static User authenticateUser(String userId, String password) {
         for (User user : allUsers) {
-            // Match userId and password
             if (user instanceof Admin && user.getUserId().equals(userId) && user.getPassword().equals(password)) {
                 return user;
             } else if (user instanceof Attendee && user.getUserId().equals(userId) && user.getPassword().equals(password)) {
@@ -112,7 +112,7 @@ public class TicketQueen {
         String emailAddress = getInput();
         System.out.print("Enter password: ");
         String password = getInput();
-        
+        // Only Attendee users allowed to register
         Attendee newUser = new Attendee(username, emailAddress, password);
         String userID = newUser.getUserId();
         System.out.println("Your account has been created.");
@@ -123,7 +123,7 @@ public class TicketQueen {
         
     }
 
-    
+    // Filter to see available tickets. Show Predicate Lambda in use
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
         List<Event> availableEvents = allEvents.stream()
                 .filter(event -> event.getTicketAvailability(ticketType) > 0)
@@ -162,6 +162,7 @@ public class TicketQueen {
 		allEvents.remove(eventToDelete);
 		
 	}
+	// For user to see all events registered by Organisers. 
     public static ArrayList<Event> getAllEvents() {
         return allEvents;
     }

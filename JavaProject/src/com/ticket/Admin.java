@@ -3,6 +3,7 @@ package com.ticket;
 public class Admin extends User implements EventManager{
 
 	private String userId;
+	// Start at one to ensure the userid generation works.
 	private static int count =1;
 	
 	// Example of this. and this()
@@ -27,6 +28,7 @@ public class Admin extends User implements EventManager{
 		return "Admin";
 
 	}
+	//Override postLoginMenu method to display secondary menu with Admin options.
 	@Override
     public void postLoginMenu() {
         boolean adminActive = true;
@@ -89,6 +91,7 @@ public class Admin extends User implements EventManager{
 	    TicketQueen.addUser(newOrganiser);
 	    System.out.println("Organiser account successfully created with User ID: " + newOrganiser.getUserId());
 	}
+	
 	//Method overriding/polymorphism example.
 	@Override 
 	public void cancelEvent() {
@@ -110,7 +113,7 @@ public class Admin extends User implements EventManager{
 	        System.out.println("Event not found.");
 	    }
 	}
-	//This method use LVTI 
+	//This method uses LVTI 
 	   private void viewAllBookings() {
 	        System.out.println("\nAll Bookings:");
 	        boolean bookingsFound = false;

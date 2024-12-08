@@ -5,6 +5,7 @@ public final class ComedyEvent extends Event {
 	private String performer;
 	
 	public ComedyEvent(String eventId, String eventName, String venue, String date, String performer, String organiser) {
+		// Fields common to all events.
 		super(eventId, eventName, venue, date, organiser);
 		this.performer = performer;
 	}

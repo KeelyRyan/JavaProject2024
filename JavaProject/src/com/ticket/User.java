@@ -7,6 +7,7 @@ public abstract class User {
 	protected String username;
 	
 
+	// Two constructors to enable Super() to be demonstrated in Admin class
 	public User(String emailAddress, String password) {
 		this.emailAddress=emailAddress;
 		this.password=password;
@@ -20,6 +21,7 @@ public abstract class User {
 	}
 	
 
+	// Getters and Setters to show encapsulation and protection of class fields.
 public void setEmailAddress(String emailAddress) {
 	this.emailAddress= emailAddress;
 }

@@ -2,6 +2,7 @@ package com.ticket;
 
 import java.util.ArrayList;
 
+// Example of interface being implemented
 public final class Organiser extends User implements EventManager {
 
 	private String userId;
@@ -12,6 +13,7 @@ public final class Organiser extends User implements EventManager {
 	public Organiser(String username, String emailAddress, String password) {
 		super(username, emailAddress, password);
 		count++;
+		// Generate unique userId.
 		this.userId = "ORG" + String.format("%03d", count);
 	}
 	
@@ -86,6 +88,7 @@ public final class Organiser extends User implements EventManager {
 	
 	        System.out.println("Event added successfully: " + newEvent.getEventDetails());
 	    }
+	 // Edit newly created event.
 	 private void editEvent() {
 		 System.out.println("Enter the Event ID of the event to edit: ");
 		 String eventId = TicketQueen.getInput();
@@ -124,6 +127,7 @@ public final class Organiser extends User implements EventManager {
          
 	 }
 }
+	 // Cancel event, Admin can cancel all events, Organiser can only cancel events they created. 
 	 @Override 
 	    public void cancelEvent() {
 	        System.out.print("Enter Event ID to delete: ");

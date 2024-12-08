@@ -1,7 +1,7 @@
 package com.ticket;
 
 import java.util.EnumMap;
-
+// Example of sealed class to control event types.
 public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent {
 	
     private String eventId;
@@ -10,6 +10,7 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
     private String date;
     private String organiser;
     
+    // Enums being used. Declare in Ticket Type class.
     protected EnumMap<TicketType, Integer> ticketAvailability = new EnumMap<>(TicketType.class);
     
     public Event(String eventId, String eventName, String venue, String date, String organiser) {
@@ -18,6 +19,8 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
         this.venue = venue;
         this.date = date;
         this.setOrganiser(organiser);
+        
+        //Limit the amount of tickets available to demonstrate Lambda in main class.
         
         ticketAvailability.put(TicketType.VIP, 100);
         ticketAvailability.put(TicketType.GENERAL, 700);
@@ -66,6 +69,7 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
     public int getTicketAvailability(TicketType ticketType) {
         return ticketAvailability.get(ticketType);
     }
+    // Used to display events to all users.
 	public String getEventDetails() {
         return "Event ID: " + eventId + ", Name: " + eventName + ", Venue: " + venue + ", Date: " + date;
     }
