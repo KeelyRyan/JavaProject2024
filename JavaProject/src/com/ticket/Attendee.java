@@ -9,7 +9,8 @@ public class Attendee extends User{
 	private ArrayList <String> attendeeTickets = new ArrayList <>();
 
 	private static int count = 0;
-		
+	
+	//Invoke super (user) constructor
 	public Attendee(String username, String emailAddress, String password) {
 		super(username, emailAddress, password);
 		count++;
