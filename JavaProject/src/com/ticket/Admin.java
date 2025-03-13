@@ -123,7 +123,7 @@ public class Admin extends User implements EventManager{
 	                var attendee = (Attendee) user;
 	                if (!attendee.getAttendeeTickets().isEmpty()) {
 	                    System.out.println("\nUser ID: " + attendee.getUserId() + " - " + attendee.getUserName());
-	                    for (String ticket : attendee.getAttendeeTickets()) {
+	                    for (TicketRecord ticket : attendee.getAttendeeTickets()) {
 	                        System.out.println("  - " + ticket);
 	                    }
 	                    bookingsFound = true;

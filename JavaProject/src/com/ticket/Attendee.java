@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Attendee extends User{
 
 	private String userId;
-	private ArrayList <String> attendeeTickets = new ArrayList <>();
+	private ArrayList <TicketRecord> attendeeTickets = new ArrayList <>();
 
 	private static int count = 0;
 	
@@ -26,7 +26,7 @@ public class Attendee extends User{
 		return "Member";
 
 	}
-	public ArrayList<String> getAttendeeTickets() {
+	public ArrayList<TicketRecord> getAttendeeTickets() {
 	    return attendeeTickets;
 	}
 
@@ -93,7 +93,7 @@ public class Attendee extends User{
 	            }
 
 	            if (selectedEvent.bookTicket(ticketType)) {
-	            	 attendeeTickets.add("Event: " + selectedEvent.getEventDetails() + ", Ticket Type: " + ticketType);
+	            	 attendeeTickets.add(new TicketRecord(selectedEvent.getEventId(), ticketType));
 	                System.out.println("Ticket booked successfully for event: " + selectedEvent.getEventDetails());
 	            } else {
 	                System.out.println("Sorry, no tickets available for the selected type.");
@@ -132,7 +132,7 @@ public class Attendee extends User{
 	            for(int i = 0; i < ticketNumber; i++) { 
 		            if (selectedEvent.bookTicket(ticketType)) {
 		            	ticketsBooked++;
-		            	attendeeTickets.add("Event: " + selectedEvent.getEventDetails() + ", Ticket Type: " + ticketType);
+		            	attendeeTickets.add(new TicketRecord(selectedEvent.getEventId(), ticketType));
 		                System.out.println("Ticket booked successfully for event: " + selectedEvent.getEventDetails());
 		            } else {
 		            	System.out.println("Only " + ticketsBooked + " tickets were booked. No more tickets available of type " + ticketType);
@@ -150,8 +150,8 @@ public class Attendee extends User{
 	            System.out.println("You have no booked tickets.");
 	        } else {
 	            System.out.println("\nYour Booked Tickets:");
-	            for (String ticket : attendeeTickets) {
-	                System.out.println(ticket);
+	            for (TicketRecord ticket : attendeeTickets) {
+	                System.out.println("Event Id: " + ticket.eventId() + " | Ticekt Type: " + ticket.ticketType());
 	            }
 	        }
 	    }
