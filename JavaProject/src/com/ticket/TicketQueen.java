@@ -94,15 +94,15 @@ public class TicketQueen {
  // Authenticate user by checking userId and password
     private static User authenticateUser(String userId, String password) {
         for (User user : allUsers) {
-            if (user instanceof Admin && user.getUserId().equals(userId) && user.getPassword().equals(password)) {
-                return user;
-            } else if (user instanceof Attendee && user.getUserId().equals(userId) && user.getPassword().equals(password)) {
-                return user;
-            } else if (user instanceof Organiser && user.getUserId().equals(userId) && user.getPassword().equals(password)) {
-                return user;
+            if (user instanceof Admin admin && admin.getUserId().equals(userId) && admin.getPassword().equals(password)) {
+                return admin;
+            } else if (user instanceof Attendee attendee && attendee.getUserId().equals(userId) && attendee.getPassword().equals(password)) {
+                return attendee;
+            } else if (user instanceof Organiser organiser && organiser.getUserId().equals(userId) && organiser.getPassword().equals(password)) {
+                return organiser;
             }
         }
-        return null; // Return null if user not found
+        return null; // User not found
     }
 
     private static void registerUser() {

@@ -119,16 +119,12 @@ public class Admin extends User implements EventManager{
 	        boolean bookingsFound = false;
 
 	        for (var user : TicketQueen.getAllUsers()) {
-	            if (user instanceof Attendee) {
-	                var attendee = (Attendee) user;
-	                if (!attendee.getAttendeeTickets().isEmpty()) {
-	                    System.out.println("\nUser ID: " + attendee.getUserId() + " - " + attendee.getUserName());
-	                    for (TicketRecord ticket : attendee.getAttendeeTickets()) {
-	                        System.out.println("  - " + ticket);
-	                    }
-	                    bookingsFound = true;
-	                }
-	            }
+	            if (user instanceof Attendee attendee && !attendee.getAttendeeTickets().isEmpty()) {  // Here I use Pattern Matching
+	                System.out.println("\nUser ID: " + attendee.getUserId() + " - " + attendee.getUserName());
+	                attendee.getAttendeeTickets().forEach(ticket -> 
+	                    System.out.println("  - Event ID: " + ticket.eventId() + " | Ticket Type: " + ticket.ticketType())
+	                );
+	            } bookingsFound = true;
 	        }
 
 	        if (!bookingsFound) {

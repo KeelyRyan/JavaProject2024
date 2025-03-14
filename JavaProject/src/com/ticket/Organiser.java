@@ -88,65 +88,58 @@ public final class Organiser extends User implements EventManager {
 	
 	        System.out.println("Event added successfully: " + newEvent.getEventDetails());
 	    }
-	 // Edit newly created event.
+// I use Pattern Matching here
 	 private void editEvent() {
-		 System.out.println("Enter the Event ID of the event to edit: ");
-		 String eventId = TicketQueen.getInput();
-		 
-		 Event eventToEdit = null;
-		 for(Event event : orgEvents) {
-			 if(event.getEventId().equals(eventId)) {
-				 eventToEdit = event;
-				 break;
-			 }
-		 }
-		
-		 if (eventToEdit != null) {
-			 System.out.println("Editing Event: " + eventToEdit.getEventDetails());
-		 
-	         System.out.print("Update Event name: (hit enter to skip)");
-	         String newName = TicketQueen.getInput();
-	         if (!newName.isEmpty()) {
-	             eventToEdit.setEventName(newName);
-	         }
-	         System.out.print("Update Event venue: (hit enter to skip)");
-	         String newVenue = TicketQueen.getInput();
-	         if (!newVenue.isEmpty()) {
-	             eventToEdit.setVenue(newVenue);
-	         }
-	         System.out.print("Update Event Date: (hit enter to skip)");
-	         String newDate = TicketQueen.getInput();
-	         if (!newDate.isEmpty()) {
-	             eventToEdit.setDate(newDate);
-	         }
-	         
-	         System.out.println("Event update successfully: " + eventToEdit.getEventDetails());
-	 } else {
-		 System.out.println("Event not found in your event list.");
-         
-         
-	 }
-}
+		    System.out.println("Enter the Event ID of the event to edit: ");
+		    String eventId = TicketQueen.getInput();
+		    
+		    Event eventToEdit = null;
+
+		    for (Event event : orgEvents) {
+		        if (event instanceof Event e && e.getEventId().equals(eventId)) {
+		            eventToEdit = e;
+		            System.out.println("Editing Event: " + eventToEdit.getEventDetails());
+		            break; 
+		        }
+		    }
+
+		    if (eventToEdit != null) {
+		        System.out.print("Update Event name: (hit enter to skip) ");
+		        String newName = TicketQueen.getInput();
+		        if (!newName.isEmpty()) {
+		            eventToEdit.setEventName(newName);
+		        }
+
+		        System.out.print("Update Event venue: (hit enter to skip) ");
+		        String newVenue = TicketQueen.getInput();
+		        if (!newVenue.isEmpty()) {
+		            eventToEdit.setVenue(newVenue);
+		        }
+
+		        System.out.print("Update Event Date: (hit enter to skip) ");
+		        String newDate = TicketQueen.getInput();
+		        if (!newDate.isEmpty()) {
+		            eventToEdit.setDate(newDate);
+		        }
+
+		        System.out.println("Event updated successfully: " + eventToEdit.getEventDetails());
+		    } else {
+		        System.out.println("Event not found in your event list.");
+		    }
+		}
+
 	 // Cancel event, Admin can cancel all events, Organiser can only cancel events they created. 
 	 @Override 
-	    public void cancelEvent() {
-	        System.out.print("Enter Event ID to delete: ");
-	        String eventId = TicketQueen.getInput();
+	 public void cancelEvent() {
+		    System.out.print("Enter Event ID to delete: ");
+		    String eventId = TicketQueen.getInput();
 
-	        Event eventToDelete = null;
-	        for (Event event : orgEvents) {
-	            if (event.getEventId().equals(eventId)) {
-	                eventToDelete = event;
-	                break;
-	            }
-	        }
-
-	        if (eventToDelete != null) {
-	            orgEvents.remove(eventToDelete);
-	            TicketQueen.removeEvent(eventToDelete);
-	            System.out.println("Event deleted successfully.");
-	        } else {
-	            System.out.println("Event not found in your event list.");
-	        }
-	    }
-	}
+		    for (Event event : TicketQueen.getAllEvents()) {
+		        if (event instanceof Event eventToDelete && eventToDelete.getEventId().equals(eventId)) {
+		            TicketQueen.removeEvent(eventToDelete);
+		            System.out.println("Event deleted successfully.");
+		            break;
+		        }
+		    }
+		}
+}
