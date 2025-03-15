@@ -145,14 +145,14 @@ public class Attendee extends User{
 	        }
 	   }
 	   
-	    private void viewTickets() {
-	        if (attendeeTickets.isEmpty()) {
-	            System.out.println("You have no booked tickets.");
-	        } else {
-	            System.out.println("\nYour Booked Tickets:");
-	            for (TicketRecord ticket : attendeeTickets) {
-	                System.out.println("Event Id: " + ticket.eventId() + " | Ticekt Type: " + ticket.ticketType());
-	            }
-	        }
-	    }
+	   private void viewTickets() {
+		    if (attendeeTickets.isEmpty()) {
+		        System.out.println("You have no booked tickets.");
+		    } else {
+		        System.out.println("\n Your Booked Tickets:");
+		        attendeeTickets.forEach(ticket -> 
+		            System.out.println("  - Event ID: " + ticket.eventId() + " | Ticket Type: " + ticket.ticketType())
+		        );
+		    }
+		}
 }

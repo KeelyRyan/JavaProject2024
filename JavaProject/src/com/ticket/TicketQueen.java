@@ -1,7 +1,9 @@
 
 package com.ticket;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -123,22 +125,37 @@ public class TicketQueen {
         
     }
 
-    // Filter to see available tickets. Show Predicate Lambda in use
+    // I use streams here...foreach, count, filter, max, collect, map
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
-        List<Event> availableEvents = allEvents.stream()
-                .filter(event -> event.getTicketAvailability(ticketType) > 0)
-                .collect(Collectors.toList());
-
-        if (availableEvents.isEmpty()) {
-            System.out.println("No events available with tickets for type: " + ticketType);
-        } else {
-            System.out.println("\nEvents with available tickets for " + ticketType + ":");
-            for (Event event : availableEvents) {
-                System.out.println(event.getEventDetails() + " - " + ticketType + " Tickets Available: " + event.getTicketAvailability(ticketType));
-            }
-        }
+    	List<Event> availableEvents = allEvents.stream()
+    			.filter(event -> event.getTicketAvailability(ticketType) > 0)
+    			.toList();
+    	if (availableEvents.isEmpty()) {
+    		System.out.println("No events with " + ticketType + " tickets available.");
+    	}else {
+    		System.out.println("\n Events with " + ticketType + " tickets available:");
+    		availableEvents.forEach(event -> 
+    			System.out.println(event.getEventDetails() + " - " + ticketType + " Tickets Available: " + event.getTicketAvailability(ticketType)) 
+    				);
+    	}
+    					
     }
     
+    public static long countAvailableEvents() {
+        return allEvents.stream()
+                .filter(event -> event.getTicketAvailability(TicketType.GENERAL) > 0) 
+                .count();
+    }
+
+    public static void findEventWithMostTickets() {
+        allEvents.stream()
+      //Find max available tickets
+            .max(Comparator.comparingInt(event -> event.getTicketAvailability(TicketType.GENERAL))) 
+            .ifPresentOrElse(
+                event -> System.out.println("Event with the most available tickets: " + event.getEventDetails()),
+                () -> System.out.println("No events available")
+            );
+    }
     static void displayEvents() {
         if (allEvents.isEmpty()) {
             System.out.println("No events available.");
@@ -149,6 +166,14 @@ public class TicketQueen {
             }
         }
     }
+    public static void groupEventsByAvailability() {
+        Map<Boolean, List<Event>> eventGroups = allEvents.stream()
+                .collect(Collectors.groupingBy(event -> event.getTicketAvailability(TicketType.GENERAL) > 0));  // ✅ Groups by availability
+
+        System.out.println("Available Events: " + eventGroups.get(true));
+        System.out.println("Sold Out Events: " + eventGroups.get(false));
+    }
+
 
     public static void addUser(User user) {
         allUsers.add(user);
