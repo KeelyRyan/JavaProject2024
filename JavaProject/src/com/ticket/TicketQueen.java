@@ -16,14 +16,18 @@ public class TicketQueen {
 	private static ArrayList<Event> allEvents = new ArrayList<>();
 	
 	public static void main(String[] args) {
+	    // Load users from file at startup
+	    allUsers.addAll(LoggerUtil.loadUsers());
 
-	    // Generate initial Admin user.
-	    Admin admin = new Admin("admin@example.com", "ADM001", "adminPass");
-	    allUsers.add(admin);
+	    // Generate an initial Admin user if no users exist
+	    if (allUsers.isEmpty()) {
+	        Admin admin = new Admin("admin@example.com", "ADM001", "adminPass");
+	        allUsers.add(admin);
+	        LoggerUtil.saveUsers(allUsers);  // Save the newly created admin
+	    }
 
 	    System.out.println("Welcome to TicketQueen.");
 
-	    // Show main menu. Uses enhanced Switch syntax.
 	    boolean appOpen = true;
 	    while (appOpen) {
 	        mainMenu();
@@ -40,10 +44,16 @@ public class TicketQueen {
 	            default -> System.out.println("Invalid choice. Please try again.");
 	        }
 	    }
+
+
 	    // Shut down the executor when exiting
 	    shutdownExecutor();
 	    System.out.println("Booking service terminated. Goodbye!");
 	    System.exit(0);
+
+	    // Save users when exiting
+	    LoggerUtil.saveUsers(allUsers);
+	
 	}
 		
 	// Method to get user input 
@@ -73,23 +83,34 @@ public class TicketQueen {
 
 
     
-	private static void userLogin() {
-	    System.out.print("Enter userId: ");
-	    String userId = getInput();
-	    System.out.print("Enter password: ");
-	    String password = getInput();
+    private static void userLogin() {
+        System.out.print("Enter userId: ");
+        String userId = getInput();
+        System.out.print("Enter password: ");
+        String password = getInput();
 
-	    User currentUser = authenticateUser(userId, password);
+ 
+        User currentUser = null;
+   
+        if (userId.equals("admin") || userId.startsWith("ADM")) {
+            currentUser = authenticateUser(userId, password);
+        } else if (userId.startsWith("ATT")) {
+            currentUser = authenticateUser(userId, password);
+        } else if (userId.startsWith("ORG")) {
 
-	    // Check if the user was successfully authenticated
-	    if (currentUser != null) {
-	        System.out.println("Welcome " + currentUser.getUserName() + ", you are logged in as " + currentUser.displayUserRole());
-	        currentUser.postLoginMenu();
-	    } else {
-	        System.out.println("Invalid userId or password. Please try again.");
-	        userLogin();
-	    }
-	}
+            currentUser = authenticateUser(userId, password);
+        }
+
+
+        // Check if the user was successfully authenticated
+        if (currentUser != null) {
+            System.out.println("Welcome " + currentUser.getUserName() + ", you are logged in as " + currentUser.displayUserRole());
+            currentUser.postLoginMenu();
+        } else {
+            System.out.println("Invalid userId or password. Please try again.");
+            userLogin();
+        }
+    }
 
     
  // Authenticate user by checking userId and password
@@ -113,16 +134,17 @@ public class TicketQueen {
         String emailAddress = getInput();
         System.out.print("Enter password: ");
         String password = getInput();
-        // Only Attendee users allowed to register
+
         Attendee newUser = new Attendee(username, emailAddress, password);
         String userID = newUser.getUserId();
-        System.out.println("Your account has been created.");
-        System.out.println("Your userId is " + userID);
         allUsers.add(newUser);
-        
-        userLogin();   
-        
+
+        LoggerUtil.saveUsers(allUsers);  // Save after registration
+
+        System.out.println("Your account has been created. Your userId is " + userID);
+        userLogin();
     }
+
 
     // I use streams here...foreach, count, filter, max, collect, map,
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
