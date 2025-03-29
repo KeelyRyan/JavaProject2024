@@ -55,39 +55,41 @@ public final class Organiser extends User implements EventManager {
 	        }
 	 }
 	 @Override
-	public void addEvent() {
-	        System.out.print("Enter Event ID: ");
-	        String eventId = TicketQueen.getInput();
-	        
-	        System.out.print("Enter category (Music/Comedy/Theatre: ");
-	        String eventType = TicketQueen.getInput().toLowerCase();
-	        
-	        System.out.print("Enter Director/act/comedian: ");
-	        String eventPerformers = TicketQueen.getInput();
+	 public void addEvent() {
+	     System.out.print("Enter Event ID: ");
+	     String eventId = TicketQueen.getInput();
 
-	        System.out.print("Enter Event Name: ");
-	        String eventName = TicketQueen.getInput();
+	     System.out.print("Enter category (Music/Comedy/Theatre): ");
+	     String eventType = TicketQueen.getInput().toLowerCase();
 
-	        System.out.print("Enter Venue: ");
-	        String venue = TicketQueen.getInput();
+	     System.out.print("Enter Director/Act/Comedian: ");
+	     String eventPerformers = TicketQueen.getInput();
 
-	        System.out.print("Enter Date (YYYY-MM-DD): ");
-	        String date = TicketQueen.getInput();
+	     System.out.print("Enter Event Name: ");
+	     String eventName = TicketQueen.getInput();
 
-	        Event newEvent = null;
-	     
-	        if(eventType.equals("music")) {
-	        	newEvent = new MusicEvent(eventId, eventName, venue, date, eventPerformers, userId); 
-	        }if(eventType.equals("comedy")) {
-	        	newEvent = new ComedyEvent(eventId, eventName, venue, date, eventPerformers, userId);
-	        }if(eventType.equals("theatre")) {
-		        newEvent = new TheatreEvent(eventId, eventName, venue, date, eventPerformers, userId);
-	        }
-	        orgEvents.add(newEvent);
-	        TicketQueen.addEvent(newEvent);
-	
-	        System.out.println("Event added successfully: " + newEvent.getEventDetails());
-	    }
+	     System.out.print("Enter Venue: ");
+	     String venue = TicketQueen.getInput();
+
+	     System.out.print("Enter Date (YYYY-MM-DD): ");
+	     String date = TicketQueen.getInput();
+
+	     Event newEvent = switch (eventType) {
+	         case "music" -> new MusicEvent(eventId, eventName, venue, date, eventPerformers, userId);
+	         case "comedy" -> new ComedyEvent(eventId, eventName, venue, date, eventPerformers, userId);
+	         case "theatre" -> new TheatreEvent(eventId, eventName, venue, date, eventPerformers, userId);
+	         default -> null;
+	     };
+
+	     if (newEvent != null) {
+	         orgEvents.add(newEvent);
+	         TicketQueen.addEvent(newEvent);
+	         System.out.println("Event added successfully: " + newEvent.getEventDetails());
+	     } else {
+	         System.out.println("Invalid event type. Please enter 'Music', 'Comedy', or 'Theatre'.");
+	     }
+	 }
+
 // I use Pattern Matching here
 	 private void editEvent() {
 		    System.out.println("Enter the Event ID of the event to edit: ");
