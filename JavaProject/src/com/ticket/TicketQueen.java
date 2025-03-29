@@ -3,7 +3,9 @@ package com.ticket;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.concurrent.ExecutorService;
@@ -14,8 +16,11 @@ public class TicketQueen {
 	// Array Lists to store users and events
 	private static ArrayList<User> allUsers = new ArrayList<>();
 	private static ArrayList<Event> allEvents = new ArrayList<>();
+	private static ResourceBundle messages;
 	
+
 	public static void main(String[] args) {
+		
 	    // Load users from file at startup
 	    allUsers.addAll(LoggerUtil.loadUsers());
 
@@ -25,7 +30,9 @@ public class TicketQueen {
 	        allUsers.add(admin);
 	        LoggerUtil.saveUsers(allUsers);  // Save the newly created admin
 	    }
-
+       
+	    // Language selection
+        selectLanguage();
 	    System.out.println("Welcome to TicketQueen.");
 
 	    boolean appOpen = true;
@@ -60,13 +67,25 @@ public class TicketQueen {
 	static String getInput() {
 	    return scanner.nextLine();
 	}
+    private static void selectLanguage() {
+        System.out.println("Select language (1 for English, 2 for French): ");
+        Scanner scanner = new Scanner(System.in);
+        int langChoice = scanner.nextInt();
+        
+        Locale locale = switch (langChoice) {
+            case 2 -> Locale.FRENCH;
+            default -> Locale.ENGLISH;
+        };
+        
+        messages = ResourceBundle.getBundle("resources.messages", locale);
+    }
 
 	static void mainMenu() {
 		
-		System.out.println("Enter '1' to login,");
-		System.out.println("Enter '2' to register a new account,");
-		System.out.println("Enter '3' to browse event,");
-		System.out.println("Enter '4' to quit...");
+        System.out.println(messages.getString("menu.login"));
+        System.out.println(messages.getString("menu.register"));
+        System.out.println(messages.getString("menu.browse"));
+        System.out.println(messages.getString("menu.quit"));
 	}
 	private static final Scanner scanner = new Scanner(System.in);
 
