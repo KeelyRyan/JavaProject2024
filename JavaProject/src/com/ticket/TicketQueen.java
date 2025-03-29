@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TicketQueen {
 	
@@ -14,31 +16,35 @@ public class TicketQueen {
 	private static ArrayList<Event> allEvents = new ArrayList<>();
 	
 	public static void main(String[] args) {
-		
-		// Generate initial Admin user.
-		Admin admin = new Admin("admin@example.com", "ADM001", "adminPass");
-		allUsers.add(admin);
-		
-		System.out.println("Welcome to TicketQueen.");
-		
-		// Show main menu. Shows enhanced Switch in use.
-        boolean appOpen = true;
-        while (appOpen) {
+
+	    // Generate initial Admin user.
+	    Admin admin = new Admin("admin@example.com", "ADM001", "adminPass");
+	    allUsers.add(admin);
+
+	    System.out.println("Welcome to TicketQueen.");
+
+	    // Show main menu. Uses enhanced Switch syntax.
+	    boolean appOpen = true;
+	    while (appOpen) {
 	        mainMenu();
 	        int choice = getUserChoice();
-	
+
 	        switch (choice) {
 	            case 1 -> userLogin();
 	            case 2 -> registerUser();
 	            case 3 -> displayEvents();
-	            case 4 -> {System.out.println("Thank you for visiting TicketQueen, see you again.");
-	            	appOpen = false;
-	                System.exit(0);}
+	            case 4 -> {
+	                System.out.println("Thank you for visiting TicketQueen, see you again.");
+	                appOpen = false;
+	            }
 	            default -> System.out.println("Invalid choice. Please try again.");
-        }
-    }
-}
-	private static Scanner scanner = new Scanner(System.in);
+	        }
+	    }
+	    // Shut down the executor when exiting
+	    shutdownExecutor();
+	    System.out.println("Booking service terminated. Goodbye!");
+	    System.exit(0);
+	}
 		
 	// Method to get user input 
 	static String getInput() {
@@ -52,45 +58,38 @@ public class TicketQueen {
 		System.out.println("Enter '3' to browse event,");
 		System.out.println("Enter '4' to quit...");
 	}
-    static int getUserChoice() {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            int choice = scanner.nextInt();
-            return choice;
-        } catch (Exception e) {
-            return -1; // Invalid input
-        }
+	private static final Scanner scanner = new Scanner(System.in);
 
-    }
+	static int getUserChoice() {
+	    try {
+	        int choice = scanner.nextInt();
+	        scanner.nextLine();  // Clear the newline character after nextInt()
+	        return choice;
+	    } catch (Exception e) {
+	        scanner.nextLine();  // Clear the invalid input
+	        return -1;  // Return -1 for invalid input
+	    }
+	}
+
+
     
-    private static void userLogin() {
-        System.out.print("Enter userId: ");
-        String userId = getInput();
-        System.out.print("Enter password: ");
-        String password = getInput();
+	private static void userLogin() {
+	    System.out.print("Enter userId: ");
+	    String userId = getInput();
+	    System.out.print("Enter password: ");
+	    String password = getInput();
 
- 
-        User currentUser = null;
-   
-        if (userId.equals("admin") || userId.startsWith("ADM")) {
-            currentUser = authenticateUser(userId, password);
-        } else if (userId.startsWith("ATT")) {
-            currentUser = authenticateUser(userId, password);
-        } else if (userId.startsWith("ORG")) {
+	    User currentUser = authenticateUser(userId, password);
 
-            currentUser = authenticateUser(userId, password);
-        }
-
-
-        // Check if the user was successfully authenticated
-        if (currentUser != null) {
-            System.out.println("Welcome " + currentUser.getUserName() + ", you are logged in as " + currentUser.displayUserRole());
-            currentUser.postLoginMenu();
-        } else {
-            System.out.println("Invalid userId or password. Please try again.");
-            userLogin();
-        }
-    }
+	    // Check if the user was successfully authenticated
+	    if (currentUser != null) {
+	        System.out.println("Welcome " + currentUser.getUserName() + ", you are logged in as " + currentUser.displayUserRole());
+	        currentUser.postLoginMenu();
+	    } else {
+	        System.out.println("Invalid userId or password. Please try again.");
+	        userLogin();
+	    }
+	}
 
     
  // Authenticate user by checking userId and password
@@ -125,11 +124,11 @@ public class TicketQueen {
         
     }
 
-    // I use streams here...foreach, count, filter, max, collect, map
+    // I use streams here...foreach, count, filter, max, collect, map,
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
     	List<Event> availableEvents = allEvents.stream()
     			.filter(event -> event.getTicketAvailability(ticketType) > 0)
-    			.toList();
+    			.collect(Collectors.toList()); 
     	if (availableEvents.isEmpty()) {
     		System.out.println("No events with " + ticketType + " tickets available.");
     	}else {
@@ -168,12 +167,11 @@ public class TicketQueen {
     }
     public static void groupEventsByAvailability() {
         Map<Boolean, List<Event>> eventGroups = allEvents.stream()
-                .collect(Collectors.groupingBy(event -> event.getTicketAvailability(TicketType.GENERAL) > 0));  // ✅ Groups by availability
+                .collect(Collectors.groupingBy(event -> event.getTicketAvailability(TicketType.GENERAL) > 0));  // Groups by availability
 
         System.out.println("Available Events: " + eventGroups.get(true));
         System.out.println("Sold Out Events: " + eventGroups.get(false));
     }
-
 
     public static void addUser(User user) {
         allUsers.add(user);
@@ -194,7 +192,22 @@ public class TicketQueen {
     public static ArrayList<User> getAllUsers() {
         return allUsers;
     }
-
-
+    public static Event getEventById(String eventId) {
+        return allEvents.stream()
+            .filter(event -> event.getEventId().equals(eventId))
+            .findFirst()
+            .orElse(null);
+    }
+    private static final ExecutorService bookingExecutor = Executors.newFixedThreadPool(5);
+    public static void shutdownExecutor() {
+        try {
+            bookingExecutor.shutdown();
+            if (!bookingExecutor.isTerminated()) {
+                System.out.println("Waiting for ongoing tasks to complete...");
+            }
+        } catch (Exception e) {
+            System.err.println("Error while shutting down booking executor: " + e.getMessage());
+        }
+    }
 
 }
