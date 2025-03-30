@@ -1,23 +1,22 @@
 package com.ticket;
 
-public final class ComedyEvent extends Event {
-	
-	private String performer;
-	
-	public ComedyEvent(String eventId, String eventName, String venue, String date, String performer, String organiser) {
-		// Fields common to all events.
-		super(eventId, eventName, venue, date, organiser);
-		this.performer = performer;
-	}
+import java.time.LocalDate;
 
-	@Override
-	public String getEventType() {
-		return "Comedy Event";
-	
-	}
-	
-    public String getShowDetails() {
-        return "Comedy by: " + performer + " in " + getVenue();
+public final class ComedyEvent extends Event {
+
+    private String performer;
+
+    public ComedyEvent(String eventId, String eventName, String venue, LocalDate date, String performer, String organiser) {
+        super(eventId, eventName, venue, date, organiser);  // Pass LocalDate directly
+        this.performer = performer;
     }
 
+    @Override
+    public String getEventType() {
+        return "Comedy Event";
+    }
+
+    public String getShowDetails() {
+        return "Comedy by: " + performer + " at " + getVenue();
+    }
 }

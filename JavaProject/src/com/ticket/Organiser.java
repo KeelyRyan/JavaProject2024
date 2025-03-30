@@ -1,5 +1,6 @@
 package com.ticket;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 // Example of interface being implemented
@@ -74,21 +75,29 @@ public final class Organiser extends User implements EventManager {
 	     System.out.print("Enter Date (YYYY-MM-DD): ");
 	     String date = TicketQueen.getInput();
 
-	     Event newEvent = switch (eventType) {
-	         case "music" -> new MusicEvent(eventId, eventName, venue, date, eventPerformers, userId);
-	         case "comedy" -> new ComedyEvent(eventId, eventName, venue, date, eventPerformers, userId);
-	         case "theatre" -> new TheatreEvent(eventId, eventName, venue, date, eventPerformers, userId);
-	         default -> null;
-	     };
+	     try {
+	         LocalDate parsedDate = LocalDate.parse(date);  // Correctly parse the date
 
-	     if (newEvent != null) {
-	         orgEvents.add(newEvent);
-	         TicketQueen.addEvent(newEvent);
-	         System.out.println("Event added successfully: " + newEvent.getEventDetails());
-	     } else {
-	         System.out.println("Invalid event type. Please enter 'Music', 'Comedy', or 'Theatre'.");
+	         // Use the parsedDate directly when creating the event
+	         Event newEvent = switch (eventType) {
+	             case "music" -> new MusicEvent(eventId, eventName, venue, parsedDate, eventPerformers, userId);
+	             case "comedy" -> new ComedyEvent(eventId, eventName, venue, parsedDate, eventPerformers, userId);
+	             case "theatre" -> new TheatreEvent(eventId, eventName, venue, parsedDate, eventPerformers, userId);
+	             default -> null;
+	         };
+
+	         if (newEvent != null) {
+	             orgEvents.add(newEvent);
+	             TicketQueen.addEvent(newEvent);
+	             System.out.println("Event added successfully: " + newEvent.getEventDetails());
+	         } else {
+	             System.out.println("Invalid event type. Please enter 'Music', 'Comedy', or 'Theatre'.");
+	         }
+	     } catch (Exception e) {
+	         System.out.println("Invalid date format. Please enter date as YYYY-MM-DD.");
 	     }
 	 }
+
 
 // I use Pattern Matching here
 	 private void editEvent() {

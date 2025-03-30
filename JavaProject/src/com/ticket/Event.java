@@ -1,23 +1,26 @@
 package com.ticket;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.EnumMap;
+
 // Example of sealed class to control event types.
 public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent {
 	
     private String eventId;
     private String eventName;
     private String venue;
-    private String date;
+    private LocalDate date;
     private String organiser;
     
     // Enums being used. Declare in Ticket Type class.
     protected EnumMap<TicketType, Integer> ticketAvailability = new EnumMap<>(TicketType.class);
     
-    public Event(String eventId, String eventName, String venue, String date, String organiser) {
+    public Event(String eventId, String eventName, String venue, LocalDate date, String organiser) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.venue = venue;
-        this.date = date;
+        this.date = date;  // Store as LocalDate directly
         this.setOrganiser(organiser);
         
         //Limit the amount of tickets available to demonstrate Lambda in main class.
@@ -52,12 +55,16 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
         this.venue = venue;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
-
     public void setDate(String date) {
-        this.date = date;
+        this.date = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);  // Parsing date input
+    }
+
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        return date.format(formatter);  
     }
 	public String getOrganiser() {
 		return organiser;
@@ -69,10 +76,10 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
     public int getTicketAvailability(TicketType ticketType) {
         return ticketAvailability.get(ticketType);
     }
-    // Used to display events to all users.
-	public String getEventDetails() {
-        return "Event ID: " + eventId + ", Name: " + eventName + ", Venue: " + venue + ", Date: " + date;
+    public String getEventDetails() {
+        return "Event ID: " + eventId + ", Name: " + eventName + ", Venue: " + venue + ", Date: " + getFormattedDate();
     }
+
     
     public abstract String getEventType();
 
