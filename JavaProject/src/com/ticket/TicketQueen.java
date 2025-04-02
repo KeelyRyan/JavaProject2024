@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class TicketQueen {
 	
@@ -124,6 +125,10 @@ public class TicketQueen {
         // Check if the user was successfully authenticated
         if (currentUser != null) {
             System.out.println("Welcome " + currentUser.getUserName() + ", you are logged in as " + currentUser.displayUserRole());
+            System.out.println("Statistics:");
+            System.out.println("Total available events: " + TicketQueen.countAvailableEvents());
+            TicketQueen.findEventWithMostTickets();
+
             currentUser.postLoginMenu();
         } else {
             System.out.println("Invalid userId or password. Please try again.");
@@ -165,11 +170,12 @@ public class TicketQueen {
     }
 
 
-    // I use streams here...foreach, count, filter, max, collect, map,
+    // I use predicate and streams here...foreach, count, filter, max, collect, map,
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
-    	List<Event> availableEvents = allEvents.stream()
-    			.filter(event -> event.getTicketAvailability(ticketType) > 0)
-    			.collect(Collectors.toList()); 
+        Predicate<Event> hasAvailableTickets = event -> event.getTicketAvailability(ticketType) > 0;
+        List<Event> availableEvents = allEvents.stream()
+            .filter(hasAvailableTickets)  
+            .collect(Collectors.toList());
     	if (availableEvents.isEmpty()) {
     		System.out.println("No events with " + ticketType + " tickets available.");
     	}else {
@@ -180,7 +186,8 @@ public class TicketQueen {
     	}
     					
     }
-    
+
+
     public static long countAvailableEvents() {
         return allEvents.stream()
                 .filter(event -> event.getTicketAvailability(TicketType.GENERAL) > 0) 

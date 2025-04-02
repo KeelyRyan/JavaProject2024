@@ -39,7 +39,8 @@ public class Admin extends User implements EventManager{
             System.out.println("Enter '3' to view events,");
             System.out.println("Enter '4' to cancel an event,");
             System.out.println("Enter '5' to view bookings,");
-            System.out.println("Enter '6' to logout");
+            System.out.println("Enter '6' to view events with tickets available");
+            System.out.println("Enter '7' to logout");
 
             int choice = TicketQueen.getUserChoice();
             switch (choice) {
@@ -54,6 +55,17 @@ public class Admin extends User implements EventManager{
                 case 5 ->
                     viewAllBookings();
                 case 6 -> {
+                    System.out.print("Enter ticket type (VIP/GENERAL/BALCONY): ");
+                    String ticketTypeStr = TicketQueen.getInput().toUpperCase();
+                    try {
+                        TicketType ticketType = TicketType.valueOf(ticketTypeStr);
+                        TicketQueen.displayEventsWithAvailableTickets(ticketType);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid ticket type. Please try again.");
+                    }
+                }
+
+                case 7 -> {
                     adminActive = false;
                     System.out.println("Logging out...");}
                 default -> System.out.println("Invalid choice. Please try again.");

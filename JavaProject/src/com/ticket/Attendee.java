@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 import java.util.Scanner;
 
 public class Attendee extends User{
@@ -193,10 +194,12 @@ public class Attendee extends User{
 		    if (attendeeTickets.isEmpty()) {
 		        System.out.println("You have no booked tickets.");
 		    } else {
+		    	Consumer<? super TicketRecord> printTicket = ticket -> System.out.println("  - Event ID: " + ticket.eventId() + " | Ticket Type: " + ticket.ticketType());
 		        System.out.println("\n Your Booked Tickets:");
-		        attendeeTickets.forEach(ticket -> 
-		            System.out.println("  - Event ID: " + ticket.eventId() + " | Ticket Type: " + ticket.ticketType())
-		        );
+		        attendeeTickets.forEach(printTicket);
+		        
 		    }
 		}
 }
+
+
