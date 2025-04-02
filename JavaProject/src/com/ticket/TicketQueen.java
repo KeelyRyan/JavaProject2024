@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class TicketQueen {
 	
@@ -170,7 +171,7 @@ public class TicketQueen {
     }
 
 
-    // I use predicate and streams here...foreach, count, filter, max, collect, map,
+    // I use predicate to filter here also streams: forEach, collect,
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
         Predicate<Event> hasAvailableTickets = event -> event.getTicketAvailability(ticketType) > 0;
         List<Event> availableEvents = allEvents.stream()
@@ -187,7 +188,7 @@ public class TicketQueen {
     					
     }
 
-
+//Use to display tickets on startup, includes streams count(), filter()
     public static long countAvailableEvents() {
         return allEvents.stream()
                 .filter(event -> event.getTicketAvailability(TicketType.GENERAL) > 0) 
@@ -196,7 +197,7 @@ public class TicketQueen {
 
     public static void findEventWithMostTickets() {
         allEvents.stream()
-      //Find max available tickets
+//Find max available tickets using max()
             .max(Comparator.comparingInt(event -> event.getTicketAvailability(TicketType.GENERAL))) 
             .ifPresentOrElse(
                 event -> System.out.println("Event with the most available tickets: " + event.getEventDetails()),
@@ -205,7 +206,9 @@ public class TicketQueen {
     }
     static void displayEvents() {
         if (allEvents.isEmpty()) {
-            System.out.println("No events available.");
+        	Supplier<String> noEventsMessage = () -> "No events are currently available.";
+        	System.out.println(noEventsMessage.get());
+
         } else {
             System.out.println("Available Events:");
             for (Event event : allEvents) {
