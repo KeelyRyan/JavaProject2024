@@ -58,14 +58,6 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
     public LocalDate getDate() {
         return date;
     }
-    public void setDate(String date) {
-        this.date = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);  // Parsing date input
-    }
-
-    public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
-        return date.format(formatter);  
-    }
 	public String getOrganiser() {
 		return organiser;
 	}
@@ -75,6 +67,15 @@ public abstract sealed class Event permits MusicEvent, TheatreEvent, ComedyEvent
 
     public int getTicketAvailability(TicketType ticketType) {
         return ticketAvailability.get(ticketType);
+    }
+    // Date/Time to display date as 1 April 2025
+    public void setDate(String date) {
+        this.date = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);  // Parsing date input
+    }
+
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
+        return date.format(formatter);  
     }
     public String getEventDetails() {
         return "Event ID: " + eventId + ", Name: " + eventName + ", Venue: " + venue + ", Date: " + getFormattedDate();

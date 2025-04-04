@@ -204,6 +204,8 @@ public class TicketQueen {
                 () -> System.out.println("No events available")
             );
     }
+    
+// I use supplier here to show a default message
     static void displayEvents() {
         if (allEvents.isEmpty()) {
         	Supplier<String> noEventsMessage = () -> "No events are currently available.";
@@ -218,7 +220,7 @@ public class TicketQueen {
     }
     public static void groupEventsByAvailability() {
         Map<Boolean, List<Event>> eventGroups = allEvents.stream()
-                .collect(Collectors.groupingBy(event -> event.getTicketAvailability(TicketType.GENERAL) > 0));  // Groups by availability
+                .collect(Collectors.groupingBy(event -> event.getTicketAvailability(TicketType.GENERAL) > 0));  
 
         System.out.println("Available Events: " + eventGroups.get(true));
         System.out.println("Sold Out Events: " + eventGroups.get(false));
@@ -260,5 +262,7 @@ public class TicketQueen {
             System.err.println("Error while shutting down booking executor: " + e.getMessage());
         }
     }
+
+
 
 }

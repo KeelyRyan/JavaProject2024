@@ -129,13 +129,15 @@ public class Admin extends User implements EventManager{
 	   private void viewAllBookings() {
 	        System.out.println("\nAll Bookings:");
 	        boolean bookingsFound = false;
-
+	        
+//I use pattern matching here 
 	        for (var user : TicketQueen.getAllUsers()) {
-	            if (user instanceof Attendee attendee && !attendee.getAttendeeTickets().isEmpty()) {  // Here I use Pattern Matching
+	            if (user instanceof Attendee attendee && !attendee.getAttendeeTickets().isEmpty()) { 
 	                System.out.println("\nUser ID: " + attendee.getUserId() + " - " + attendee.getUserName());
 	                attendee.getAttendeeTickets().forEach(ticket -> 
 	                    System.out.println("  - Event ID: " + ticket.eventId() + " | Ticket Type: " + ticket.ticketType())
 	                );
+	                
 	            } bookingsFound = true;
 	        }
 
