@@ -57,7 +57,12 @@ public class TicketQueen {
 
 	    // Shut down the executor when exiting
 	    shutdownExecutor();
-	    System.out.println("Booking service terminated. Goodbye!");
+	    if (bookingExecutor.isTerminated()) {
+	        System.out.println("Booking service terminated successfully. Goodbye!");
+	    } else {
+	        System.out.println("Booking service is still shutting down. Goodbye!");
+	    }
+
 	    System.exit(0);
 
 	    // Save users when exiting
@@ -71,13 +76,16 @@ public class TicketQueen {
 	}
     private static void selectLanguage() {
         System.out.println("Select language (1 for English, 2 for French): ");
-        Scanner scanner = new Scanner(System.in);
         int langChoice = scanner.nextInt();
-        
         Locale locale = switch (langChoice) {
+            case 1 -> Locale.ENGLISH;
             case 2 -> Locale.FRENCH;
-            default -> Locale.ENGLISH;
+            default -> {
+                System.out.println("Invalid choice. Defaulting to English.");
+                yield Locale.ENGLISH;
+            }
         };
+
         
         messages = ResourceBundle.getBundle("resources.messages", locale);
     }
@@ -94,11 +102,11 @@ public class TicketQueen {
 	static int getUserChoice() {
 	    try {
 	        int choice = scanner.nextInt();
-	        scanner.nextLine();  // Clear the newline character after nextInt()
+	        scanner.nextLine();  
 	        return choice;
 	    } catch (Exception e) {
-	        scanner.nextLine();  // Clear the invalid input
-	        return -1;  // Return -1 for invalid input
+	        scanner.nextLine();  
+	        return -1;  
 	    }
 	}
 
@@ -162,11 +170,10 @@ public class TicketQueen {
 
         Attendee newUser = new Attendee(username, emailAddress, password);
         String userID = newUser.getUserId();
-        allUsers.add(newUser);
-
-        LoggerUtil.saveUsers(allUsers);  // Save after registration
-
+        addUser(newUser);
         System.out.println("Your account has been created. Your userId is " + userID);
+
+
         userLogin();
     }
 
@@ -226,9 +233,11 @@ public class TicketQueen {
         System.out.println("Sold Out Events: " + eventGroups.get(false));
     }
 
-    public static void addUser(User user) {
+    public static <T extends User> void addUser(T user) {
         allUsers.add(user);
+        LoggerUtil.saveUsers(allUsers);  
     }
+
     
     public static void addEvent(Event event) {
         allEvents.add(event);
@@ -251,6 +260,7 @@ public class TicketQueen {
             .findFirst()
             .orElse(null);
     }
+    
     private static final ExecutorService bookingExecutor = Executors.newFixedThreadPool(5);
     public static void shutdownExecutor() {
         try {

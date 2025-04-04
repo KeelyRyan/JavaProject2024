@@ -1,2 +1,6 @@
 ADM001,null,admin@example.com,adminPass
 ATT001,KeelyRyan,keely@gmail.com,1234
+ATT002,Bob,bob@bob.com,1234
+ATT003,Peg,peg@peg.com,1234
+ADM002,null,admin3@ticket.com,1234
+ADM003,null,admin3@ticket.com,1234
