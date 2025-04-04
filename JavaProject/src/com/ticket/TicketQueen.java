@@ -201,7 +201,7 @@ public class TicketQueen {
 
     public static void findEventWithMostTickets() {
         allEvents.stream()
-//Find max available tickets using max()
+//Find max available tickets using max() also Comparator.comparing()
             .max(Comparator.comparingInt(event -> event.getTicketAvailability(TicketType.GENERAL))) 
             .ifPresentOrElse(
                 event -> System.out.println("Event with the most available tickets: " + event.getEventDetails()),
