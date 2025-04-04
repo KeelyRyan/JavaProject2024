@@ -180,27 +180,24 @@ public class TicketQueen {
 
     // I use predicate to filter here also streams: forEach, collect,
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
-        Predicate<Event> hasAvailableTickets = event -> event.getTicketAvailability(ticketType) > 0;
         List<Event> availableEvents = allEvents.stream()
-            .filter(hasAvailableTickets)  
-            .collect(Collectors.toList());
-    	if (availableEvents.isEmpty()) {
-    		System.out.println("No events with " + ticketType + " tickets available.");
-    	}else {
-    		System.out.println("\n Events with " + ticketType + " tickets available:");
-    		availableEvents.forEach(event -> 
-    			System.out.println(event.getEventDetails() + " - " + ticketType + " Tickets Available: " + event.getTicketAvailability(ticketType)) 
-    				);
-    	}
-    					
+            .filter(event -> event.getTicketAvailability(ticketType) > 0)
+            .toList();
+        if (availableEvents.isEmpty()) {
+            System.out.println("No events with " + ticketType + " tickets available.");
+        } else {
+            availableEvents.forEach(_ -> System.out.println("Event with " + ticketType + " tickets available."));
+        }
     }
+
 
 //Use to display tickets on startup, includes streams count(), filter()
     public static long countAvailableEvents() {
         return allEvents.stream()
-                .filter(event -> event.getTicketAvailability(TicketType.GENERAL) > 0) 
+                .filter(event -> event.getTicketAvailability(TicketType.GENERAL) > 0)
                 .count();
     }
+
 
     public static void findEventWithMostTickets() {
         allEvents.stream()
