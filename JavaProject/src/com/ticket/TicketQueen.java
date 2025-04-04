@@ -177,16 +177,16 @@ public class TicketQueen {
         userLogin();
     }
 
-
-    // I use predicate to filter here also streams: forEach, collect,
+ // I use predicate to filter here also streams: forEach, collect, also unnamed variable
     public static void displayEventsWithAvailableTickets(TicketType ticketType) {
+        Predicate<Event> hasAvailableTickets = event -> event.getTicketAvailability(ticketType) > 0;
         List<Event> availableEvents = allEvents.stream()
-            .filter(event -> event.getTicketAvailability(ticketType) > 0)
+            .filter(hasAvailableTickets)  // Using Predicate here
             .toList();
         if (availableEvents.isEmpty()) {
             System.out.println("No events with " + ticketType + " tickets available.");
         } else {
-            availableEvents.forEach(_ -> System.out.println("Event with " + ticketType + " tickets available."));
+            availableEvents.forEach(_ -> System.out.println("Event with " + ticketType + " tickets available."));  // Using unnamed variable
         }
     }
 
