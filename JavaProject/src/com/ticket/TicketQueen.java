@@ -229,7 +229,7 @@ public class TicketQueen {
         System.out.println("Available Events: " + eventGroups.get(true));
         System.out.println("Sold Out Events: " + eventGroups.get(false));
     }
-
+//Generics used here as user type doesn't matter
     public static <T extends User> void addUser(T user) {
         allUsers.add(user);
         LoggerUtil.saveUsers(allUsers);  
